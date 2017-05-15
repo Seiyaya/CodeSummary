@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cctv.dao.UserDao">
+    <resultMap id="user" type="User">
+        <result property="userId" column="userId"></result>
+        <result property="username" column="username"></result>
+        <result property="password" column="password"></result>
+        <result property="description" column="description"></result>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    userId,username,password,description
+    </sql>
+
+    <!-- Select SQL -->
+    <sql id="userSelector">
+        SELECT
+        <if test="fields != null">
+        ${fields}
+        </if>
+        <if test="fields == null">
+        <include refid="Base_Column_List"/>
+        </if>
+        FROM ssm_user
+    </sql>
+
+    <sql id="userListWhere">
+        <where>
+            <if test="userId != null">
+                and userId=#{userId}
+            </if>
+            <if test="username != null">
+                and username=#{username}
+            </if>
+            <if test="password != null">
+                and password=#{password}
+            </if>
+            <if test="description != null">
+                and description=#{description}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="userListLimit">
+        <if test="startRow != null">
+            limit #{startRow},#{pageSize}
+        </if>
+    </sql>
+
+    <!-- 根据主键查询 -->
+    <select id="getUserById" resultMap="user" parameterType="hashMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ssm_user
+        WHERE
+        userId=#{userId}
+    </select>
+    <select id="getUsersByIds" resultMap="user" parameterType="ArrayList">
+        SELECT <include refid="Base_Column_List"/> FROM ssm_user
+        WHERE
+        userId in
+        <foreach collection="list" separator="," item="id" open="(" close=")">
+        #{id}
+        </foreach>
+    </select>
+
+    <!-- 根据主键删除 -->
+    <delete id="delUserById" parameterType="hashMap">
+        DELETE FROM ssm_user
+        WHERE
+        userId=#{userId}
+    </delete>
+
+    <!-- 根据主键批量删除 -->
+    <delete id="delUsersByIds">
+        DELETE FROM ssm_user
+        WHERE
+        userId in
+        <foreach collection="list" separator="," item="id" open="(" close=")">
+        #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据主键更新 -->
+    <update id="updateUserById" parameterType="User">
+        UPDATE ssm_user
+        <set>
+            <trim suffixOverrides=",">
+                <if test="userId != null">
+                    userId = #{userId},
+                </if>
+                <if test="username != null">
+                    username = #{username},
+                </if>
+                <if test="password != null">
+                    password = #{password},
+                </if>
+                <if test="description != null">
+                    description = #{description},
+                </if>
+            </trim>
+        </set>
+        WHERE
+        userId=#{userId}
+    </update>
+    <!-- 分页 -->
+    <select id="getUserListWithPage" parameterType="User" resultMap="user">
+        <include refid="userSelector" />
+        <include refid="userListWhere" />
+        <include refid="userListLimit" />
+    </select>
+    <!-- 数据总数 -->
+    <select id="getUserListCount" parameterType="User" resultType="int">
+        SELECT count(1) FROM ssm_user
+        <include refid="userListWhere" />
+    </select>
+    <!-- 数据集合 -->
+    <select id="getUserList" parameterType="User" resultMap="user">
+        <include refid="userSelector" />
+        <include refid="userListWhere" />
+    </select>
+    <!-- 添加 -->
+    <insert id="addUser" parameterType="User">
+        INSERT INTO ssm_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+            userId,
+            </if>
+            <if test="username != null">
+            username,
+            </if>
+            <if test="password != null">
+            password,
+            </if>
+            <if test="description != null">
+            description,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+            #{userId},
+            </if>
+            <if test="username != null">
+            #{username},
+            </if>
+            <if test="password != null">
+            #{password},
+            </if>
+            <if test="description != null">
+            #{description},
+            </if>
+        </trim>
+    </insert>
+</mapper>
