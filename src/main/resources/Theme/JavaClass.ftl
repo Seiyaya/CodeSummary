@@ -1,4 +1,4 @@
-package ${packageName?default('cctv.bean')};
+package ${packageName?default('com.seiyaya.bean')};
 
 import java.io.Serializable;
 

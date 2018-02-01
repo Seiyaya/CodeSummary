@@ -1,10 +1,12 @@
-package ${packageName?default('cctv.dao')};
+package ${packageName?default('com.seiyaya.mapper')};
 
 import java.util.List;
 
-import cctv.bean.${beanName};
+import com.seiyaya.bean.${beanName};
+import org.apache.ibatis.annotations.Mapper;
 
-public interface ${beanName}Dao{
+@Mapper
+public interface ${beanName}Mapper{
 
     /**
      * 添加
@@ -16,25 +18,25 @@ public interface ${beanName}Dao{
      * 根据id查找
      * @param id
      */
-    ${beanName} get${beanName}ById(Integer id);
+    ${beanName} get${beanName}ById(String id);
 
     /**
      * 根据多个id查找实体
      * @param idList
      */
-    List<${beanName}> get${beanName}sByIds(List<Integer> idList);
+    List<${beanName}> get${beanName}sByIds(List<String> idList);
 
     /**
      * 根据id删除
      * @param id
      */
-    Integer del${beanName}ById(Integer id);
+    Integer del${beanName}ById(String id);
 
     /**
      * 根据多个id删除
      * @param idList
      */
-    Integer del${beanName}sByIds(List<Integer> idList);
+    Integer del${beanName}sByIds(List<String> idList);
 
     /**
      * 根据id更新

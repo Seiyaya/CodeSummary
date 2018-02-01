@@ -16,6 +16,9 @@ public class SQLTableData {
     private String attrStr;
     private String methodStr;
 
+    private List<SQLColumnData> columnData;
+    private String tableName;
+    
     public String getAttrStr() {
         return attrStr;
     }
@@ -31,8 +34,34 @@ public class SQLTableData {
     public void setMethodStr(String methodStr) {
         this.methodStr = methodStr;
     }
+    
+    public List<SQLColumnData> getColumnData() {
+		return columnData;
+	}
 
-    /**
+	public void setColumnData(List<SQLColumnData> columnData) {
+		this.columnData = columnData;
+	}
+	
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+	
+	public SQLTableData(String tableName) {
+		columnData = getColsData(tableName);
+		this.tableName = tableName;
+	}
+	
+	public SQLTableData() {
+		
+	}
+
+
+	/**
      * 通过表名获取列的信息
      * @param tableName
      * @return
@@ -71,8 +100,8 @@ public class SQLTableData {
      * @param tableName
      * @return
      */
-    public String getBeanField(String tableName){
-        List<SQLColumnData> dataList = getColsData(tableName);
+    public String getBeanField(){
+        List<SQLColumnData> dataList = this.columnData;
         String className = getTableName2ClassName(tableName);
         StringBuilder str = new StringBuilder();
         StringBuilder getsetStr = new StringBuilder();

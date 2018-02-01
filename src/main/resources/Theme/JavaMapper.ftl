@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="${package}${beanName}Dao">
+<mapper namespace="${package}${beanName}Mapper">
     <resultMap id="${beanName?lower_case}" type="${beanName}">
         <#list properties as property>
         <result property="${property.colName}" column="${property.colName}"></result>
